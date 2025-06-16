@@ -4,7 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>课程资料</title>
+    <title>资料分发</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MXCHR0X12J"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-MXCHR0X12J');
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* 全局样式 */
@@ -57,20 +65,71 @@
             border-radius: 2px;
         }
 
-        h2 {
+        /* 讲座分类标题样式 */
+        .lecture-header {
             color: #3498db;
             border-bottom: 2px solid #ecf0f1;
             padding-bottom: 12px;
             margin-top: 40px;
             font-size: 1.8em;
             font-weight: 600;
+            cursor: pointer;
+            /* 添加手型光标表示可点击 */
+            display: flex;
+            align-items: center;
+            /* 垂直居中对齐 */
+            /* 移除 justify-content: space-between; 因为我们想让它们靠近 */
+            transition: color 0.3s ease;
         }
+
+        .lecture-header:hover {
+            color: #2980b9;
+        }
+
+        /* 折叠指示图标 */
+        .toggle-icon {
+            font-size: 0.5em;
+            transition: transform 0.3s ease;
+            margin-right: 10px;
+            /* 调整为右边距，将图标推离文本 */
+            margin-left: 0;
+            /* 确保没有左边距 */
+        }
+
+        /* 展开时的图标旋转 */
+        .lecture-header.expanded .toggle-icon {
+            transform: rotate(90deg);
+            /* 展开时旋转90度 */
+        }
+
+        /* 讲座内容（PDF列表）容器 */
+        .lecture-content {
+            max-height: 0;
+            /* 默认隐藏 */
+            overflow: hidden;
+            /* 隐藏溢出内容 */
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+            /* 平滑过渡 */
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        /* 展开时的内容样式 */
+        .lecture-content.expanded {
+            max-height: 1000px;
+            /* 足够大的值确保内容完全显示 */
+            padding-top: 20px;
+            /* 展开时恢复内边距 */
+            padding-bottom: 20px;
+        }
+
 
         /* 列表样式 */
         ul {
             list-style: none;
             padding: 0;
-            margin-top: 20px;
+            margin-top: 0;
+            /* 调整为0，由 lecture-content 的 padding 控制 */
 
             /* 新增：Flexbox 布局 */
             display: flex;
@@ -153,6 +212,102 @@
             margin-top: 30px;
         }
 
+        /* 底部链接样式 - 优化开始 */
+        .footer-links {
+            text-align: center;
+            margin-top: 60px;
+            /* 增加与上方内容的间距 */
+            padding-top: 25px;
+            /* 增加内边距 */
+            border-top: 2px solid #e0e0e0;
+            /* 更明显的顶部边框 */
+            font-size: 0.95em;
+            color: #7f8c8d;
+            position: relative;
+            /* 用于伪元素定位 */
+        }
+
+        /* 增加一个装饰性的分隔线 */
+        .footer-links::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            /* 稍微向上移动，与 border-top 重叠 */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            /* 装饰线 */
+            height: 3px;
+            background-color: #3498db;
+            /* 与主题色一致 */
+            border-radius: 2px;
+        }
+
+        .footer-links p {
+            margin-bottom: 20px;
+            /* 增加提示文字与链接的间距 */
+            font-size: 1.05em;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .footer-links .links-wrapper {
+            display: flex;
+            /* 使用 Flexbox 布局链接 */
+            justify-content: center;
+            /* 居中排列 */
+            flex-wrap: wrap;
+            /* 允许链接换行 */
+            gap: 25px;
+            /* 链接之间的间距 */
+        }
+
+        .footer-links a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+            /* 链接文字加粗 */
+            padding: 8px 15px;
+            /* 增加点击区域 */
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+            display: inline-flex;
+            /* 允许图标和文字对齐 */
+            align-items: center;
+            gap: 8px;
+            /* 图标与文字的间距 */
+        }
+
+        .footer-links a:hover {
+            color: #ffffff;
+            /* 悬停时文字变为白色 */
+            background-color: #3498db;
+            /* 悬停时背景色变为主题色 */
+            transform: translateY(-2px);
+            /* 轻微上浮效果 */
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+            /* 增加阴影 */
+        }
+
+        /* 为链接添加图标 */
+        .footer-links a[href*="diraw.top"]::before {
+            content: '🏠';
+            /* 主站图标 */
+            font-size: 1.1em;
+        }
+
+        .footer-links a[href*="bilibili.com"]::before {
+            content: '📺';
+            /* B站图标 */
+            font-size: 1.1em;
+        }
+
+        .footer-links a[href*="github.com"]::before {
+            content: '🐙';
+            /* GitHub图标 */
+            font-size: 1.1em;
+        }
+
         /* 响应式设计 */
         @media (max-width: 768px) {
 
@@ -166,6 +321,20 @@
                 flex: 1 1 100%;
                 /* 小屏幕上显示一行一个 */
                 max-width: 100%;
+            }
+
+            .footer-links .links-wrapper {
+                flex-direction: column;
+                /* 在小屏幕上垂直排列链接 */
+                gap: 15px;
+                /* 调整垂直间距 */
+            }
+
+            .footer-links a {
+                width: fit-content;
+                /* 让链接宽度适应内容 */
+                margin: 0 auto;
+                /* 垂直居中 */
             }
         }
 
@@ -185,6 +354,26 @@
                 margin-top: 30px;
             }
         }
+
+        /* CC 协议样式 */
+        .cc-license {
+            text-align: center;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+
+        .cc-license a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .cc-license a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -195,6 +384,17 @@
             <!-- 内容将由 JavaScript 动态加载到这里 -->
             <p>正在加载资料...</p>
         </div>
+
+        <!-- 底部链接区域 -->
+        <div class="footer-links">
+            <a href="https://diraw.top/" target="_blank">主站</a>
+            <a href="https://space.bilibili.com/3546387746654749" target="_blank">B站</a>
+            <a href="https://github.com/Diraw" target="_blank">GitHub</a>
+        </div>
+
+        <div class="cc-license">
+            <p>本站内容采用 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">
+            CC BY-NC-SA 4.0 </a> 许可协议进行分发</p>  </div>
     </div>
 
     <!-- 引入 js-yaml 库 -->
@@ -203,7 +403,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const contentDiv = document.getElementById('content');
-            const yamlFilePath = 'note.yaml';
+            const yamlFilePath = 'note.yaml'; // 确保你的 YAML 文件名为 note.yaml
 
             fetch(yamlFilePath)
                 .then(response => {
@@ -217,23 +417,67 @@
                         const data = jsyaml.load(yamlText);
                         console.log('Parsed YAML data:', data); // 调试用
 
-                        if (data && data.lecture) {
-                            const lecture = data.lecture;
-                            let htmlContent = `<h2>${lecture.name}</h2>`;
-                            if (lecture.pdfs && Array.isArray(lecture.pdfs)) {
-                                htmlContent += '<ul>';
-                                lecture.pdfs.forEach(pdf => {
-                                    if (pdf.name && pdf.url) {
-                                        htmlContent += `<li><a href="${pdf.url}" target="_blank">${pdf.name}</a></li>`;
+                        let htmlContent = '';
+
+                        // 检查 data 是否为数组
+                        if (Array.isArray(data)) {
+                            data.forEach((item, index) => {
+                                // 检查每个数组元素是否包含 'lecture' 键
+                                if (item && item.lecture) {
+                                    const lecture = item.lecture;
+                                    const lectureId = `lecture-${index}`; // 为每个讲座生成唯一ID
+
+                                    // 判断是否是第一个讲座，如果是则添加 'expanded' 类
+                                    const isFirstLecture = (index === 0);
+                                    const headerClass = isFirstLecture ? 'lecture-header expanded' : 'lecture-header';
+                                    const contentClass = isFirstLecture ? 'lecture-content expanded' : 'lecture-content';
+
+                                    htmlContent += `
+                                        <div class="lecture-section">
+                                            <h2 class="${headerClass}" data-target="${lectureId}">
+                                                <span class="toggle-icon">▶</span> <!-- 图标放在文本前面 -->
+                                                <span>${lecture.name}</span>
+                                            </h2>
+                                            <div id="${lectureId}" class="${contentClass}">
+                                    `;
+
+                                    if (lecture.pdfs && Array.isArray(lecture.pdfs)) {
+                                        htmlContent += '<ul>';
+                                        lecture.pdfs.forEach(pdf => {
+                                            if (pdf.name && pdf.url) {
+                                                htmlContent += `<li><a href="${pdf.url}" target="_blank">${pdf.name}</a></li>`;
+                                            }
+                                        });
+                                        htmlContent += '</ul>';
+                                    } else {
+                                        htmlContent += '<p>没有找到 PDF 资料。</p>';
                                     }
-                                });
-                                htmlContent += '</ul>';
+                                    htmlContent += `
+                                            </div>
+                                        </div>
+                                    `;
+                                }
+                            });
+
+                            if (htmlContent === '') {
+                                contentDiv.innerHTML = '<p class="error-message">YAML 文件中没有找到有效的讲座数据。</p>';
                             } else {
-                                htmlContent += '<p>没有找到 PDF 资料。</p>';
+                                contentDiv.innerHTML = htmlContent;
+                                // 添加事件监听器
+                                document.querySelectorAll('.lecture-header').forEach(header => {
+                                    header.addEventListener('click', function () {
+                                        const targetId = this.dataset.target;
+                                        const content = document.getElementById(targetId);
+
+                                        // 切换 header 的 expanded 类
+                                        this.classList.toggle('expanded');
+                                        // 切换 content 的 expanded 类
+                                        content.classList.toggle('expanded');
+                                    });
+                                });
                             }
-                            contentDiv.innerHTML = htmlContent;
                         } else {
-                            contentDiv.innerHTML = '<p class="error-message">YAML 文件结构不符合预期，请检查 "lecture" 键。</p>';
+                            contentDiv.innerHTML = '<p class="error-message">YAML 文件结构不符合预期，期望是一个包含讲座列表的数组。</p>';
                         }
 
                     } catch (e) {
