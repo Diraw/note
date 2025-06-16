@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>课程资料</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* 全局样式 */
+        body {
+            font-family: 'Noto Sans SC', 'Arial', sans-serif;
+            line-height: 1.8;
+            margin: 0;
+            background-color: #f0f2f5;
+            color: #34495e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* 容器样式 */
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: #ffffff;
+            padding: 40px 50px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+
+        /* 标题样式 */
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.8em;
+            font-weight: 700;
+            letter-spacing: 1px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: #3498db;
+            border-radius: 2px;
+        }
+
+        h2 {
+            color: #3498db;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 12px;
+            margin-top: 40px;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+
+        /* 列表样式 */
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+
+            /* 新增：Flexbox 布局 */
+            display: flex;
+            flex-wrap: wrap;
+            /* 允许项目换行 */
+            gap: 20px;
+            /* 项目之间的间距 */
+            justify-content: flex-start;
+            /* 从左侧开始排列 */
+        }
+
+        li {
+            /* 调整宽度以适应一行两个 */
+            flex: 1 1 calc(50% - 10px);
+            /* 50% 宽度减去一半的 gap */
+            min-width: 300px;
+            /* 最小宽度，防止在小屏幕上过窄 */
+            max-width: calc(50% - 10px);
+            /* 确保不会超过 50% */
+
+            margin-bottom: 0;
+            /* 移除旧的底部间距，由 gap 控制 */
+            background-color: #f9fbfd;
+            padding: 12px 20px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            box-sizing: border-box;
+            /* 确保 padding 和 border 不会增加宽度 */
+        }
+
+        li:hover {
+            background-color: #e8f4fd;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        li a {
+            text-decoration: none;
+            color: #2980b9;
+            font-weight: bold;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        li a::before {
+            content: '📄';
+            margin-right: 10px;
+            font-size: 1.2em;
+            color: #3498db;
+        }
+
+        li a:hover {
+            color: #1a5276;
+            text-decoration: none;
+        }
+
+        /* 错误和提示信息样式 */
+        .error-message {
+            color: #e74c3c;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #fdeded;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            font-size: 1.1em;
+        }
+
+        /* 加载提示样式 */
+        #content p {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+            margin-top: 30px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+
+            /* 调整断点，在平板上可能也显示一行一个 */
+            ul {
+                justify-content: center;
+                /* 在小屏幕上居中显示 */
+            }
+
+            li {
+                flex: 1 1 100%;
+                /* 小屏幕上显示一行一个 */
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px 30px;
+                margin: 15px;
+            }
+
+            h1 {
+                font-size: 2.2em;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.5em;
+                margin-top: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>资料分发</h1>
+        <div id="content">
+            <!-- 内容将由 JavaScript 动态加载到这里 -->
+            <p>正在加载资料...</p>
+        </div>
+    </div>
+
+    <!-- 引入 js-yaml 库 -->
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const contentDiv = document.getElementById('content');
+            const yamlFilePath = 'note.yaml';
+
+            fetch(yamlFilePath)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(yamlText => {
+                    try {
+                        const data = jsyaml.load(yamlText);
+                        console.log('Parsed YAML data:', data); // 调试用
+
+                        if (data && data.lecture) {
+                            const lecture = data.lecture;
+                            let htmlContent = `<h2>${lecture.name}</h2>`;
+                            if (lecture.pdfs && Array.isArray(lecture.pdfs)) {
+                                htmlContent += '<ul>';
+                                lecture.pdfs.forEach(pdf => {
+                                    if (pdf.name && pdf.url) {
+                                        htmlContent += `<li><a href="${pdf.url}" target="_blank">${pdf.name}</a></li>`;
+                                    }
+                                });
+                                htmlContent += '</ul>';
+                            } else {
+                                htmlContent += '<p>没有找到 PDF 资料。</p>';
+                            }
+                            contentDiv.innerHTML = htmlContent;
+                        } else {
+                            contentDiv.innerHTML = '<p class="error-message">YAML 文件结构不符合预期，请检查 "lecture" 键。</p>';
+                        }
+
+                    } catch (e) {
+                        contentDiv.innerHTML = `<p class="error-message">解析 YAML 文件失败: ${e.message}</p>`;
+                        console.error('Error parsing YAML:', e);
+                    }
+                })
+                .catch(error => {
+                    contentDiv.innerHTML = `<p class="error-message">加载 YAML 文件失败: ${error.message}<br>请确保 note.yaml 文件存在且路径正确，并且在本地开发时使用服务器（例如 VS Code 的 Live Server 插件）以避免 CORS 问题。</p>`;
+                    console.error('Error fetching YAML:', error);
+                });
+        });
+    </script>
+</body>
+
+</html>
